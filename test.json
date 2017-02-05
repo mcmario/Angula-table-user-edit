@@ -1,0 +1,23 @@
+[
+     {
+            name:"Vasya",
+            sname:"Vasyliy",
+             age:"19",
+              usertype:"user",
+            phone:"+380978901915"
+        },
+          {
+            name:"Nastia",
+            sname:"Ivanova",
+             age:"20",
+              usertype:"user",
+            phone:"+38097565545"
+        },
+          {
+            name:"Ivan",
+            sname:"Gorec",
+               age:"24",
+              usertype:"admin",
+            phone:"+380660674125"
+        }
+]

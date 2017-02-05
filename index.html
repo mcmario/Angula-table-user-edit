@@ -1,0 +1,195 @@
+<!--список юзерів, імя , вік, прізвище, тип достопу(юзер , адмін) через модальні вікна-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" href="style/style.css">
+     <script src="js/angular.min.js"></script>  
+
+      <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/jquery-ui-1.12.1/jquery-ui.js"></script>
+
+
+   
+
+</head>
+<body ng-app="myApp" ng-controller="myCtrl as my" >
+ <div class="container">
+   <label >Search
+        <input type="text" placeholder="search" ng-model="my.search">
+        </label>
+   
+   
+    <table class="table table-bordered " >
+        <tr>
+             <th ng-click="sort='name'">Name</th>
+             <th ng-click="sort='sname'">SName</th>
+             <th ng-click="sort='Age'">Age</th>
+             <th ng-click="sort='usertype'">Usertype</th>
+             <th ng-click="sort='phone'">Phone</th>
+        </tr>
+        <tr ng-repeat="human in my.people | orderBy:sort  | filter:my.search">
+            <td >{{human.name}}</td>
+             <td >{{human.sname}}</td>
+             <td >{{human.age}}</td>
+             <td >{{human.usertype}}</td>
+             <td >{{human.phone}}</td>
+             <td><input type="button" value="remove" ng-click="my.remove(human)"></td>
+        </tr>
+        
+    </table>
+    
+   
+    <form action="">
+<!--
+        <label >Name:
+        <input type="text" placeholder="Name" ng-model="my.newUser.name">
+        </label>
+        <label >Sname:
+        <input type="text" placeholder="SName" ng-model="my.newUser.sname">
+        </label>
+        <label >Phone:
+        <input type="text" placeholder="Phone" ng-model="my.newUser.phone">
+        </label>
+        <input type="button" value="Add" ng-click="my.add()">
+-->
+    <input type="button" value="addDialog" data-toggle="modal" data-target="#myModal" class="btn btn-info ff">
+    </form>
+    
+    
+    
+    
+    
+      <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Додати нового користувача</h4>
+        </div>
+        <div class="modal-body">
+          <form action="">
+                  <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-4 ">
+  <label >Name:</label>
+         </div>
+         <div class="col-md-8 col-sm-8 col-xs-8 ">
+ <input type="text" placeholder="Name" ng-model="my.newUser.name">
+         </div>
+    </div>
+        <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-4 ">
+  <label >Sname</label>
+         </div>
+         <div class="col-md-8 col-sm-8 col-xs-8 ">
+   <input type="text" placeholder="SName" ng-model="my.newUser.sname">
+         </div>
+    </div>
+        <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-4 ">
+  <label >Age</label>
+         </div>
+         <div class="col-md-8 col-sm-8 col-xs-8 ">
+    <input type="text" placeholder="Age" ng-model="my.newUser.age">
+         </div>
+    </div>   
+          <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-4 ">
+  <label >UserType</label>
+         </div>
+         <div class="col-md-8 col-sm-8 col-xs-8 ">
+    <input type="text" placeholder="Usertype" ng-model="my.newUser.usertype">
+         </div>
+    </div>  
+          <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-4 ">
+  <label >Phone</label>
+         </div>
+         <div class="col-md-8 col-sm-8 col-xs-8 ">
+     <input type="text" placeholder="Phone" ng-model="my.newUser.phone">
+         </div>
+    </div>   
+    
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+           <button type="button" class="btn btn-info ff" id="save" ng-click="my.add()" >
+      <span class="glyphicon glyphicon-plus"></span> Додати користувача
+    </button>
+  </div>
+      </div>
+   </div>
+      </div>
+  </div>
+      
+<script> var app=angular.module("myApp",[]);
+
+app.controller('myCtrl', function(){
+    var vm=this;
+ 
+    vm.people=[
+        {
+            name:"Vasya",
+            sname:"Vasyliy",
+             age:"19",
+              usertype:"user",
+            phone:"+380978901915"
+        },
+          {
+            name:"Nastia",
+            sname:"Ivanova",
+             age:"20",
+              usertype:"user",
+            phone:"+38097565545"
+        },
+          {
+            name:"Ivan",
+            sname:"Gorec",
+               age:"24",
+              usertype:"admin",
+            phone:"+380660674125"
+        }
+    ]
+  
+    
+        vm.add=function(){
+        vm.people.push(vm.newUser);
+            console.log(vm.newUser)
+            $.ajax({
+        url:'/update',
+        data:JSON.stringify(vm),
+        type:'POST',
+        contentType:'application/json'
+    }) 
+            vm.newUser={};
+                  
+            
+        }
+        vm.remove=function(human){
+           for(var x in vm.people){
+                if(vm.people[x].phone===human.phone){
+                    vm.people.splice(x,1);
+                }
+           }
+        }
+    
+    
+    
+})
+</script>
+   
+<!--
+    <script src="js/main.js"></script>
+    
+-->
+</body>
+</html>
